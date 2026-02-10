@@ -12,7 +12,7 @@ mongoose.connect(MONGO_UI)
    .then(() => console.log("Well schom"))
    .catch((error) => console.log("Too bad . . . . . . . . .", error))
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
    res.status(200).json({message : "Hii"})
 })
 
