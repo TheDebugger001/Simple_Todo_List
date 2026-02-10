@@ -4,5 +4,5 @@ const { registerValidation } = require("../middleware/user.middleware")
 
 const router = express.Router()
 
-router.post("/register/", registerValidation, register)
-router.post("/login/", registerValidation, login)
+router.post("/register", registerValidation, register)
+router.post("/login", registerValidation, login)
