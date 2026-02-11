@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { body, param } = require("express-validator");
 require("dotenv").config()
 
-exports.registerValidation = [
+const registerValidation = [
   body("names")
     .notEmpty()
     .withMessage("Names should be provided")
@@ -25,7 +25,7 @@ exports.registerValidation = [
     .withMessage("Password should have at least 6 characters"),
 ];
 
-module.exports = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
   try {
     const authHeader = req.header("Authorization");
 
@@ -38,8 +38,14 @@ module.exports = (req, res, next) => {
 
     const decode = jwt.verify(token, process.env.JWT_SECRET)
     req.user = decode
+    next()
     
   } catch (error) {
     return res.status(501).json({ message: "Internal Server error" });
   }
 };
+
+module.exports = {
+  registerValidation,
+  authMiddleware
+}
