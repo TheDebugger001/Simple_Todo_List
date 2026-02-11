@@ -38,6 +38,7 @@ module.exports = (req, res, next) => {
 
     const decode = jwt.verify(token, process.env.JWT_SECRET)
     req.user = decode
+    
   } catch (error) {
     return res.status(501).json({ message: "Internal Server error" });
   }
