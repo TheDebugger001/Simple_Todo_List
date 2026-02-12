@@ -29,3 +29,19 @@ exports.getAllTodo = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+exports.updateTodo = async (req, res) => {
+  try {
+    todo = await TodoModel.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      {new: true}
+    );
+
+    if (!todo) return res.status(404).json({ message: "Todo Not Found" });
+
+    res.status(200).json({ message: "Todo Updated successfully", todo });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
