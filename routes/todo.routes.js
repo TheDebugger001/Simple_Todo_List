@@ -15,3 +15,5 @@ router.get("/", authMiddleware, getAllTodo);
 router.post("/add", authMiddleware, validateTodo, createTodo);
 router.put("/:id", authMiddleware, validateTodo, updateTodo);
 router.put("/:id", authMiddleware, deleteTodo);
+
+module.exports = router
