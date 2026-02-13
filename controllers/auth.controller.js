@@ -63,3 +63,13 @@ exports.login = async (req, res) => {
       .json({ message: "Internal Server Error ❌🛑", error });
   }
 };
+
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    
+    const users = await User.find
+  } catch (error) {
+    
+  }
+}

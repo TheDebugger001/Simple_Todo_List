@@ -23,7 +23,7 @@ exports.createTodo = async (req, res) => {
 
 exports.getAllTodo = async (req, res) => {
   try {
-    const todos = await TodoModel.findOne({ user: req.user.id });
+    const todos = await TodoModel.find({ user: req.user.id });
     res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
