@@ -6,10 +6,12 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 const MONGO_UI = process.env.MONGO_UI;
-const Routers = require("./routes/user.routes");
+const userRoutes = require("./routes/user.routes");
+const todoRoutes = require("./routes/todo.routes")
 
 app.use(express.json());
-app.use("/api/auth", Routers);
+app.use("/api/auth", userRoutes);
+app.use("/todos", todoRoutes)
 
 mongoose
   .connect(MONGO_UI)
