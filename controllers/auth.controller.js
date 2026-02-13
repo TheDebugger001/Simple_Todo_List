@@ -1,11 +1,11 @@
 const User = require("../models/users.models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require("dotenv").config()
+require("dotenv").config();
 
 exports.register = async (req, res) => {
   try {
-    const {names, email, password, role } = req.body;
+    const { names, email, password, role } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -41,22 +41,18 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const accessToken = jwt.sign(
-      {id: user._id},
-      process.env.JWT_SECRET,
-      {expiresIn: "10m"}
-      )
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
 
-    const refreshToken = jwt.sign(
-      {id: user._id},
-      process.env.REFRESH_TOKEN,
-      {expiresIn: "7d"}
-    )
-    
+    const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN, {
+      expiresIn: "7d",
+    });
+
     return res.status(200).json({
       message: "LoggedIn Successfully",
-      accessToken
-    })
+      accessToken,
+    });
   } catch (error) {
     return res
       .status(500)
@@ -64,12 +60,14 @@ exports.login = async (req, res) => {
   }
 };
 
-
 exports.getAllUsers = async (req, res) => {
   try {
-    
-    const users = await User.find
+    const users = await User.find();
+    if (!users) return res.status(404).json({ message: "No user found" });
+    res.status(200).json({ message: "User found successfully", users });
   } catch (error) {
-    
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
-}
+};
