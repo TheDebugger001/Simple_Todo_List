@@ -41,13 +41,21 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "10m",
-    });
+    const accessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "10m",
+      }
+    );
 
-    const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN, {
-      expiresIn: "7d",
-    });
+    const refreshToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.REFRESH_TOKEN,
+      {
+        expiresIn: "7d",
+      }
+    );
 
     return res.status(200).json({
       message: "LoggedIn Successfully",
@@ -63,12 +71,13 @@ exports.login = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
-    
-    if(req.User.role != "admin") {
-      return res.status(403).json({message: "Forbidden"})
+
+    if (req.user.role != "admin") {
+      return res.status(403).json({ message: "Forbidden" });
     }
 
-    if (users.length == 0) return res.status(404).json({ message: "No user found" });
+    if (users.length == 0)
+      return res.status(404).json({ message: "No user found" });
 
     res.status(200).json({ message: "User found successfully", users });
   } catch (error) {
@@ -80,16 +89,14 @@ exports.getAllUsers = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const updates = req.body
+    const updates = req.body;
 
-    const newUser = await User.findByIdAndUpdate(
-      req.params.id,
-      updates,
-      {new: true}
-    ).select("-password", "-role")
+    const newUser = await User.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+    }).select("-password", "-role");
 
-    res.status(200).json({message: "User updated successfully", newUser})
+    res.status(200).json({ message: "User updated successfully", newUser });
   } catch (error) {
-    res.status(500).json({message: "Internal Server Error"})
+    res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};

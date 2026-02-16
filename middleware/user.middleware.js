@@ -35,6 +35,7 @@ const authMiddleware = (req, res, next) => {
         .json({ message: "Denied access, Unauthorized request" });
 
     const token = authHeader.split(" ")[1];
+    if(!token) res.status(404).json({ message: "Token not found"})
 
     const decode = jwt.verify(token, process.env.JWT_SECRET)
     req.user = decode
