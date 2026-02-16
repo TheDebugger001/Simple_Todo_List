@@ -19,7 +19,7 @@ mongoose
   .catch((error) => console.log("Too bad . . . . . . . . .", error));
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Hii" });
+  res.status(200).json({ message: "Hii, I am Guerschom " });
 });
 
 app.listen(PORT, console.log(`Server is at http://localhost:${PORT}`));
