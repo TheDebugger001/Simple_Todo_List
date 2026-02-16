@@ -71,3 +71,19 @@ exports.getAllUsers = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+    const updates = req.body
+
+    const newUser = await User.findByIdAndUpdate(
+      req.params.id,
+      updates,
+      {new: true}
+    ).select("-password", "-role")
+
+    res.status(200).json({message: "User updated successfully", newUser})
+  } catch (error) {
+    
+  }
+}
