@@ -57,6 +57,9 @@ exports.login = async (req, res) => {
       }
     );
 
+    user.refreshToken = refreshToken
+    await user.save()
+
     return res.status(200).json({
       success: true,
       message: "LoggedIn Successfully",
@@ -108,13 +111,13 @@ exports.updateUser = async (req, res) => {
 exports.refreshAccessToken = async (req, res) => {
   try {
     const { token } = req.body;
-    if (!token) res.status(404).json({ message: "No token provided" });
+    if (!token) return res.status(404).json({ message: "No token provided" });
 
     const decode = jwt.verify(token, process.env.REFRESH_TOKEN);
 
     const user = await User.findById(decode.id);
     if (!user || user.refreshToken != token) {
-      res.status(403).json({ message: "Invalid refresh token" });
+      return res.status(403).json({ message: "Invalid refresh token" });
     }
 
     const accessToken = jwt.sign(
@@ -130,6 +133,6 @@ exports.refreshAccessToken = async (req, res) => {
         token: accessToken,
       });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(403).json({ message: "Invalid or Expired token" });
   }
 };

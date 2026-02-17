@@ -5,7 +5,7 @@ const { registerValidation, authMiddleware } = require("../middleware/user.middl
 const router = express.Router()
 
 router.get("/getUsers", authMiddleware, getAllUsers)
-router.get("/refreshAccess", refreshAccessToken)
+router.post("/refreshAccess", refreshAccessToken)
 router.post("/register", registerValidation, register)
 router.post("/login", registerValidation, login)
 router.put("/update", authMiddleware, updateUser)
