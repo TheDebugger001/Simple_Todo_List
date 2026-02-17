@@ -101,7 +101,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-const refreshAccessToken = async (req, res) => {
+exports.refreshAccessToken = async (req, res) => {
   try {
     const { token } = req.body;
     if (!token) res.status(404).json({ message: "No token provided" });
