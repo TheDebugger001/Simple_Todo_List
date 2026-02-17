@@ -58,13 +58,17 @@ exports.login = async (req, res) => {
     );
 
     return res.status(200).json({
+      success: true,
       message: "LoggedIn Successfully",
-      accessToken,
+      data: {
+        access: accessToken,
+        refresh: refreshToken
+      }
     });
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Internal Server Error ❌🛑", error });
+      .json({ message: "Internal Server Error ❌🛑", error: error });
   }
 };
 
@@ -95,7 +99,7 @@ exports.updateUser = async (req, res) => {
       new: true,
     }).select("-password", "-role");
 
-    res.status(200).json({ message: "User updated successfully", newUser });
+    res.status(200).json({ message: "User updated successfully", data: {newUser} });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }

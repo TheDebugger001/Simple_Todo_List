@@ -13,7 +13,9 @@ exports.createTodo = async (req, res) => {
     });
     await Todo.save();
 
-    res.status(201).json({ message: "Todo created successfully", Task: Todo });
+    res
+      .status(201)
+      .json({ message: "Todo created successfully", Task: { Todo } });
   } catch (error) {
     res
       .status(500)
@@ -40,7 +42,9 @@ exports.updateTodo = async (req, res) => {
 
     if (!todo) return res.status(404).json({ message: "Todo Not Found" });
 
-    res.status(200).json({ message: "Todo Updated successfully", todo });
+    res
+      .status(200)
+      .json({ message: "Todo Updated successfully", data: { todo } });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
