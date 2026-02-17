@@ -100,3 +100,32 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+const refreshAccessToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) res.status(404).json({ message: "No token provided" });
+
+    const decode = jwt.verify(token, process.env.REFRESH_TOKEN);
+
+    const user = await User.findById(decode.id);
+    if (!user || user.refreshToken != token) {
+      res.status(403).json({ message: "Invalid refresh token" });
+    }
+
+    const accessToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "10m" }
+    );
+
+    res
+      .status(201)
+      .json({
+        message: "created a new accessToken successfully",
+        token: accessToken,
+      });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
