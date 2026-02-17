@@ -33,9 +33,9 @@ exports.getAllTodo = async (req, res) => {
 exports.updateTodo = async (req, res) => {
   try {
     todo = await TodoModel.findByIdAndUpdate(
-      { _id: req.params.id },
-      req.body,
-      {new: true}
+      { _id: req.params.id, user: req.user.id },
+      { title, description, completed },
+      { new: true }
     );
 
     if (!todo) return res.status(404).json({ message: "Todo Not Found" });
@@ -48,11 +48,11 @@ exports.updateTodo = async (req, res) => {
 
 exports.deleteTodo = async (req, res) => {
   try {
-    const todo = await TodoModel.findByIdAndDelete(req.params.id)
+    const todo = await TodoModel.findByIdAndDelete(req.params.id);
 
-    if(!todo) return res.status(404).json({ message: "Todo Not Found"})
-    res.status(200).json({ message: "Todo Deleted successfully"})
+    if (!todo) return res.status(404).json({ message: "Todo Not Found" });
+    res.status(200).json({ message: "Todo Deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error"})
+    res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
