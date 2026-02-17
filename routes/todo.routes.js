@@ -11,9 +11,9 @@ const { validateTodo } = require("../middleware/todo.middleware");
 
 const router = express.Router();
 
-router.get("/", authMiddleware, getAllTodo);
+router.get("/getTodos", authMiddleware, getAllTodo);
 router.post("/add", authMiddleware, validateTodo, createTodo);
 router.put("/:id", authMiddleware, validateTodo, updateTodo);
-router.put("/:id", authMiddleware, deleteTodo);
+router.delete("/:id", authMiddleware, deleteTodo);
 
 module.exports = router

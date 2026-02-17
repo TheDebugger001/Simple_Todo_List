@@ -16,7 +16,7 @@ app.use("/todos", todoRoutes)
 mongoose
   .connect(MONGO_UI)
   .then(() => console.log("Well schom"))
-  .catch((error) => console.log("Too bad . . . . . . . . .", error));
+  .catch((error) => console.log("Too bad . . . . . . . . .\n", error));
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Hii, I am Guerschom " });
